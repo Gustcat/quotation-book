@@ -21,7 +21,11 @@ type createResponse struct {
 	ID int64 `json:"id"`
 }
 
-func Create(w http.ResponseWriter, r *http.Request) {
+type Creator interface {
+	Create(quote *storage.Quote) (int64, error)
+}
+
+func Create(w http.ResponseWriter, r *http.Request, creator Creator) {
 	w.Header().Set("Content-Type", "application/json")
 
 	quote := &storage.Quote{}
@@ -49,7 +53,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := storage.Create(quote)
+	id, err := creator.Create(quote)
 
 	if errors.Is(err, storage.ErrQuoteExists) {
 		log.Printf("Quote '%s':'%s' already exists", quote.Author, quote.Quote)

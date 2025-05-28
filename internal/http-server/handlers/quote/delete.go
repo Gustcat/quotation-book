@@ -11,7 +11,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func Delete(w http.ResponseWriter, r *http.Request) {
+type Deleter interface {
+	Delete(id int64) error
+}
+
+func Delete(w http.ResponseWriter, r *http.Request, deleter Deleter) {
 	w.Header().Set("Content-Type", "application/json")
 
 	idStr := mux.Vars(r)["id"]
@@ -22,7 +26,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = storage.Delete(id)
+	err = deleter.Delete(id)
 
 	if errors.Is(err, storage.ErrQuoteNotFound) {
 		log.Printf("Quote not found: %s", err)

@@ -9,14 +9,18 @@ import (
 	"github.com/Gustcat/quotation-book/internal/storage"
 )
 
-func List(w http.ResponseWriter, r *http.Request) {
+type Lister interface {
+	List(author *string) []*storage.QuoteWithID
+}
+
+func List(w http.ResponseWriter, r *http.Request, lister Lister) {
 	var author *string
 	query := r.URL.Query()
 	if authorQuery := query.Get("author"); authorQuery != "" {
 		author = &authorQuery
 	}
 
-	quotes := storage.List(author)
+	quotes := lister.List(author)
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(quotes); err != nil {
 		log.Printf("Error encoding JSON: %s", err)

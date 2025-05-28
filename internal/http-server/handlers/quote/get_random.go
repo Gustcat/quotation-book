@@ -10,10 +10,14 @@ import (
 	"github.com/Gustcat/quotation-book/internal/storage"
 )
 
-func GetRandom(w http.ResponseWriter, r *http.Request) {
+type Randomizer interface {
+	GetRandom() (*storage.QuoteWithID, error)
+}
+
+func GetRandom(w http.ResponseWriter, r *http.Request, randomizer Randomizer) {
 	w.Header().Set("Content-Type", "application/json")
 
-	quote, err := storage.GetRandom()
+	quote, err := randomizer.GetRandom()
 
 	if errors.Is(err, storage.ErrQuoteNotFound) {
 		log.Printf("Quote not found: %s", err)
