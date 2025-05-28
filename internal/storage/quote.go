@@ -17,7 +17,7 @@ type QuoteWithID struct {
 	Quote
 }
 
-type quoteBook struct {
+type QuoteBook struct {
 	idKeys        map[int64]*QuoteWithID
 	structKeys    map[Quote]struct{}
 	indexRandList map[int64]int
@@ -32,8 +32,8 @@ var (
 	ErrQuoteExists   = errors.New("quote of such author already exists")
 )
 
-func NewQBook() *quoteBook {
-	return &quoteBook{
+func NewQBook() *QuoteBook {
+	return &QuoteBook{
 		idKeys:        make(map[int64]*QuoteWithID),
 		structKeys:    make(map[Quote]struct{}),
 		indexRandList: make(map[int64]int),
@@ -41,7 +41,7 @@ func NewQBook() *quoteBook {
 	}
 }
 
-func (qb *quoteBook) Create(quote *Quote) (int64, error) {
+func (qb *QuoteBook) Create(quote *Quote) (int64, error) {
 	err := qb.findForCreate(quote)
 	if err != nil {
 		return 0, err
@@ -61,7 +61,7 @@ func (qb *quoteBook) Create(quote *Quote) (int64, error) {
 	return qb.IdCount, nil
 }
 
-func (qb *quoteBook) findForCreate(quote *Quote) error {
+func (qb *QuoteBook) findForCreate(quote *Quote) error {
 	qb.m.RLock()
 	defer qb.m.RUnlock()
 	_, ok := qb.structKeys[*quote]
@@ -71,7 +71,7 @@ func (qb *quoteBook) findForCreate(quote *Quote) error {
 	return nil
 }
 
-func (qb *quoteBook) GetRandom() (*QuoteWithID, error) {
+func (qb *QuoteBook) GetRandom() (*QuoteWithID, error) {
 	var err error
 	var randomIndex *big.Int
 
@@ -97,7 +97,7 @@ func (qb *quoteBook) GetRandom() (*QuoteWithID, error) {
 	return qb.idKeys[id], nil
 }
 
-func (qb *quoteBook) List(author *string) []*QuoteWithID {
+func (qb *QuoteBook) List(author *string) []*QuoteWithID {
 	qb.m.RLock()
 	defer qb.m.RUnlock()
 	quotes := []*QuoteWithID{}
@@ -115,7 +115,7 @@ func (qb *quoteBook) List(author *string) []*QuoteWithID {
 	return quotes
 }
 
-func (qb *quoteBook) Delete(id int64) error {
+func (qb *QuoteBook) Delete(id int64) error {
 	structKey, err := qb.findForDelete(id)
 	if err != nil {
 		return err
@@ -134,7 +134,7 @@ func (qb *quoteBook) Delete(id int64) error {
 	return nil
 }
 
-func (qb *quoteBook) findForDelete(id int64) (*Quote, error) {
+func (qb *QuoteBook) findForDelete(id int64) (*Quote, error) {
 	qb.m.RLock()
 	defer qb.m.RUnlock()
 	structKeyWithId, ok := qb.idKeys[id]

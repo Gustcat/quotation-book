@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/Gustcat/quotation-book/internal/storage"
 	"log"
 	"net/http"
+
+	"github.com/Gustcat/quotation-book/internal/storage"
 
 	"github.com/Gustcat/quotation-book/internal/http-server/handlers/quote"
 	"github.com/gorilla/mux"
@@ -18,26 +19,10 @@ func main() {
 
 	qb := storage.NewQBook()
 
-	creator := func(w http.ResponseWriter, r *http.Request) {
-		quote.Create(w, r, qb)
-	}
-
-	lister := func(w http.ResponseWriter, r *http.Request) {
-		quote.List(w, r, qb)
-	}
-
-	deleter := func(w http.ResponseWriter, r *http.Request) {
-		quote.Delete(w, r, qb)
-	}
-
-	randomizer := func(w http.ResponseWriter, r *http.Request) {
-		quote.GetRandom(w, r, qb)
-	}
-
-	r.HandleFunc("/quotes", creator).Methods("POST")
-	r.HandleFunc("/quotes", lister).Methods("GET")
-	r.HandleFunc("/quotes/random", randomizer).Methods("GET")
-	r.HandleFunc("/quotes/{id}", deleter).Methods("DELETE")
+	r.HandleFunc("/quotes", quote.Create(qb)).Methods("POST")
+	r.HandleFunc("/quotes", quote.List(qb)).Methods("GET")
+	r.HandleFunc("/quotes/random", quote.GetRandom(qb)).Methods("GET")
+	r.HandleFunc("/quotes/{id}", quote.Delete(qb)).Methods("DELETE")
 
 	log.Printf("Server listen on %s", baseUrl)
 
