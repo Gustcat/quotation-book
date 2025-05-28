@@ -2,12 +2,13 @@ package quote
 
 import (
 	"errors"
-	"github.com/Gustcat/quotation-book/internal/http-server/response"
-	"github.com/Gustcat/quotation-book/internal/storage"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/Gustcat/quotation-book/internal/http-server/response"
+	"github.com/Gustcat/quotation-book/internal/storage"
+	"github.com/gorilla/mux"
 )
 
 func Delete(w http.ResponseWriter, r *http.Request) {

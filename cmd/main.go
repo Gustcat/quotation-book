@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/Gustcat/quotation-book/internal/http-server/handlers/quote"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/Gustcat/quotation-book/internal/http-server/handlers/quote"
+	"github.com/gorilla/mux"
 )
 
 const (

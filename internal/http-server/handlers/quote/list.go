@@ -2,10 +2,11 @@ package quote
 
 import (
 	"encoding/json"
-	"github.com/Gustcat/quotation-book/internal/http-server/response"
-	"github.com/Gustcat/quotation-book/internal/storage"
 	"log"
 	"net/http"
+
+	"github.com/Gustcat/quotation-book/internal/http-server/response"
+	"github.com/Gustcat/quotation-book/internal/storage"
 )
 
 func List(w http.ResponseWriter, r *http.Request) {

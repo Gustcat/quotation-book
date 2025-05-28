@@ -5,10 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Gustcat/quotation-book/internal/http-server/response"
-	"github.com/Gustcat/quotation-book/internal/storage"
 	"log"
 	"net/http"
+
+	"github.com/Gustcat/quotation-book/internal/http-server/response"
+	"github.com/Gustcat/quotation-book/internal/storage"
 )
 
 const (

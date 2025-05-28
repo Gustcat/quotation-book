@@ -3,10 +3,11 @@ package quote
 import (
 	"encoding/json"
 	"errors"
-	"github.com/Gustcat/quotation-book/internal/http-server/response"
-	"github.com/Gustcat/quotation-book/internal/storage"
 	"log"
 	"net/http"
+
+	"github.com/Gustcat/quotation-book/internal/http-server/response"
+	"github.com/Gustcat/quotation-book/internal/storage"
 )
 
 func GetRandom(w http.ResponseWriter, r *http.Request) {
